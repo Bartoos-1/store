@@ -13,14 +13,14 @@ client.auth.onAuthStateChange((event, session) => {
 
   if (event === "SIGNED_OUT" || !session) {
     alert("Your session expired. Please log in again.");
-    window.location.href = "/auth.html";
+    window.location.href = "/store/auth.html";
   }
 });
 
 async function enforceAdminAccess(session) {
   if (!session?.user) {
     alert("You must log in first.");
-    window.location.href = "/auth.html";
+    window.location.href = "/store/auth.html";
     return;
   }
 
@@ -34,15 +34,15 @@ async function enforceAdminAccess(session) {
     console.error("Error fetching user role:", error.message);
     alert("Something went wrong. Please try again.");
     await client.auth.signOut();
-    window.location.href = "/auth.html";
+    window.location.href = "/store/auth.html";
     return;
   }
 
   // ✅ Secure checks
-  if (!user || user.role !== "admin" || user.is_active === false) {
+  if (!user || user.role !== "admin"|| user.role !== "super_admin" || user.is_active === false) {
     alert("Access denied. Admins only.");
     await client.auth.signOut();
-    window.location.href = "/auth.html";
+    window.location.href = "/store/auth.html";
     return;
   }
 
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const { data: { session }, error } = await client.auth.getSession();
 
   if (error || !session) {
-    window.location.href = "/auth.html"; // 🔁 redirect to login if not logged in
+    window.location.href = "/store/auth.html"; // 🔁 redirect to login if not logged in
     return;
   }
 
@@ -483,6 +483,6 @@ filterCategory.addEventListener("change", () => loadProducts(1));
 
 async function logout() {
   await client.auth.signOut();
-  window.location.href = "auth.html";
+  window.location.href = "/store/auth.html";
 }
 
