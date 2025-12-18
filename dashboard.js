@@ -39,7 +39,7 @@ async function enforceAdminAccess(session) {
   }
 
   // ✅ Secure checks
-  if (!user || user.role !== "admin"|| user.role !== "super_admin" || user.is_active === false) {
+  if (!user || user.role !== "admin"|| user.is_active === false) {
     alert("Access denied. Admins only.");
     await client.auth.signOut();
     window.location.href = "/store/auth.html";
