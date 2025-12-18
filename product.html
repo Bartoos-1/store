@@ -2631,6 +2631,7 @@ if (p.added_by) {
 
 
         const avatarContainer = DOMElements.addedByAvatar;
+
         // ⭐ ADDED BASE CLASSES for Avatar Container
         avatarContainer.classList.add('w-6', 'h-6', 'rounded-full', 'overflow-hidden', 'flex-shrink-0', 'transition', 'duration-200');
 
@@ -2648,28 +2649,43 @@ if (p.added_by) {
 
 
         // --- NAME STYLING (Liyog Blue base, Liyog Gold underline) ---
-        nameSpan.style.color = 'var(--liyog-blue)'; 
+
+        nameSpan.style.color = 'var(--liyog-blue)';
+
         nameSpan.style.fontWeight = 'bold';
-        nameSpan.style.textDecoration = 'underline'; 
+
+        nameSpan.style.textDecoration = 'underline';
+
         nameSpan.style.textDecorationColor = 'var(--liyog-gold)';
 
 
         // --- HOVER EFFECT LOGIC (Liyog Orange text, Liyog Gold underline maintained) ---
+
         nameSpan.addEventListener('mouseenter', () => {
-            // Text color changes to Liyog Orange
+
+            // Text color changes to Liyog Orange 
             nameSpan.style.color = 'var(--liyog-orange)';
-            // Underline is maintained (Liyog Gold)
+
+            // Underline is maintained (Liyog Green)
             nameSpan.style.textDecoration = 'underline';
-            nameSpan.style.textDecorationColor = 'var(--liyog-gold)'; 
+
+            nameSpan.style.textDecorationColor = 'var(--liyog-green)';
+
             nameSpan.style.textDecorationThickness = '1px'; // Optional: for a subtle underline
+
         });
 
+
         nameSpan.addEventListener('mouseleave', () => {
+
             // Text color reverts to Liyog Blue
             nameSpan.style.color = 'var(--liyog-blue)';
+
             // Underline is maintained (Liyog Gold)
-            nameSpan.style.textDecoration = 'underline'; 
+            nameSpan.style.textDecoration = 'underline';
+
             nameSpan.style.textDecorationColor = 'var(--liyog-gold)';
+
         });
 
 
@@ -2677,6 +2693,7 @@ if (p.added_by) {
 
 
         // Avatar or fallback
+
         if (user.profile_image) {
 
             avatarContainer.innerHTML = `
@@ -2699,19 +2716,25 @@ if (p.added_by) {
 
 
         // Generate Verified Badge HTML
+
         let verifiedBadgeHTML = '';
+
         if (user?.verified) {
+
             let tooltipText = 'Verified User';
+
             if (user.role === 'admin') tooltipText = 'Verified BRAND';
+
             else if (user.role === 'super_admin') tooltipText = 'Verified BRAND+';
+
             
             verifiedBadgeHTML = `
             <span class="inline-flex items-center relative group cursor-pointer ml-1" role="img" aria-label="Verified badge">
                 <div class="relative w-5 h-5 flex items-center justify-center rounded-full
-                                 bg-gradient-to-tr from-yellow-400 to-yellow-600
-                                 shadow-lg transition-transform duration-200 transform hover:scale-110">
+                             bg-gradient-to-tr from-yellow-400 to-yellow-600
+                             shadow-lg transition-transform duration-200 transform hover:scale-110">
                     <div class="verified-badge-core w-4 h-4 flex items-center justify-center
-                                     rounded-full border border-gray-900/10 absolute inset-0 m-auto">
+                                 rounded-full border border-gray-900/10 absolute inset-0 m-auto">
                         <svg class="w-3 h-3 text-white" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
                                   d="M16.707 5.293a1 1 0 010 1.414l-7.01 7.01a1 1 0 01-1.414 0l-3.01-3.01a1 1 0 011.414-1.414L9 11.586l6.293-6.293a1 1 0 011.414 0z"
@@ -2720,31 +2743,36 @@ if (p.added_by) {
                     </div>
                 </div>
                 <span class="glass-tooltip absolute top-6 left-1/2 -translate-x-1/2
-                                     px-3 py-1 text-[10px] font-bold text-white uppercase rounded-full
-                                     opacity-0 group-hover:opacity-100 transition-all duration-300
-                                     transform group-hover:-translate-y-1 whitespace-nowrap shadow-xl">
+                             px-3 py-1 text-[10px] font-bold text-white uppercase rounded-full
+                             opacity-0 group-hover:opacity-100 transition-all duration-300
+                             transform group-hover:-translate-y-1 whitespace-nowrap shadow-xl">
                     ${tooltipText}
                 </span>
             </span>`;
         }
 
+
         // Generate Role Badge HTML
+
         let roleBadgeHTML = '';
+
         if (user?.role === 'admin') {
+
+            // FIX APPLIED HERE: Changed z-[60] to z-10
             roleBadgeHTML = `
-            <span class="inline-flex items-center relative group cursor-pointer ml-1" role="img" aria-label="Admin role badge"><div class="relative w-6 h-6 flex items-center justify-center z-[60]">
+            <span class="inline-flex items-center relative group cursor-pointer ml-1" role="img" aria-label="Admin role badge"><div class="relative w-6 h-6 flex items-center justify-center z-10">
                 <svg class="w-full h-full drop-shadow-md transform transition-transform group-hover:scale-110 duration-300" viewBox="0 0 24 24">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                                 fill="url(#goldGradient)"
-                                 stroke="#FF0000"
-                                 stroke-width="1.5"
-                                 stroke-linejoin="round"/>
+                             fill="url(#goldGradient)"
+                             stroke="#FF0000"
+                             stroke-width="1.5"
+                             stroke-linejoin="round"/>
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                                 fill="url(#goldGradient)"
-                                 stroke="#28A428"
-                                 stroke-width="1.5"
-                                 stroke-linejoin="round"
-                                 style="clip-path: polygon(0 35%, 100% 35%, 100% 100%, 0 100%);"/>
+                             fill="url(#goldGradient)"
+                             stroke="#28A428"
+                             stroke-width="1.5"
+                             stroke-linejoin="round"
+                             style="clip-path: polygon(0 35%, 100% 35%, 100% 100%, 0 100%);"/>
                 </svg>
                 <div class="absolute z-20 w-1 h-1 bg-liyog-orange border border-black rounded-full shadow-[0_0_3px_rgba(255,122,0,0.8)] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
                 <div class="absolute inset-0 overflow-hidden pointer-events-none"
@@ -2756,18 +2784,22 @@ if (p.added_by) {
                 BRAND
             </span>
             </span>`;
+
         } 
+
         else if (user?.role === 'super_admin') {
+
+            // FIX APPLIED HERE: Changed z-[60] to z-10
             roleBadgeHTML = `
             <span class="inline-flex items-center relative group cursor-pointer ml-1" role="img" aria-label="Super Admin role badge">
-                <div class="relative w-8 h-8 flex items-center justify-center z-[60]">
+                <div class="relative w-8 h-8 flex items-center justify-center z-10">
                 <div class="absolute inset-0 bg-yellow-400/30 blur-md rounded-full scale-0 group-hover:scale-150 transition-transform duration-500"></div>
                 <svg class="w-full h-full drop-shadow-lg z-10 transform transition-transform group-hover:rotate-12 duration-500 ease-out" viewBox="0 0 24 24">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                                 fill="url(#goldGradient)"
-                                 stroke="url(#superAdminBorder)"
-                                 stroke-width="1.5"
-                                 stroke-linejoin="round"/>
+                             fill="url(#goldGradient)"
+                             stroke="url(#superAdminBorder)"
+                             stroke-width="1.5"
+                             stroke-linejoin="round"/>
                 </svg>
                 <div class="absolute z-20 w-1.5 h-1.5 bg-liyog-orange border border-black rounded-full shadow-[0_0_4px_rgba(255,122,0,0.8)] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
                 <div class="absolute inset-0 overflow-hidden pointer-events-none z-20"
@@ -2779,51 +2811,80 @@ if (p.added_by) {
                 BRAND+
             </span>
             </span>`;
+
         }
 
 
         // Container for badges (NOT inside link)
+
         const badgesContainer = document.createElement('div');
-badgesContainer.classList.add('flex', 'items-center', 'ml-1', 'relative'); // <-- add 'relative'
+
+        badgesContainer.classList.add('flex', 'items-center', 'ml-1');
+
         const tempDiv = document.createElement('div');
+
         tempDiv.innerHTML = verifiedBadgeHTML + roleBadgeHTML;
+
         while (tempDiv.firstChild) badgesContainer.appendChild(tempDiv.firstChild);
 
 
         // ⭐ CLICKABLE LINK: avatar + name ONLY (MODIFIED) ⭐
+
         const profileLink = document.createElement('a');
+
         profileLink.href = getStoreProfileURL(username);
+
         // Added 'group' class for hover effect targeting
         profileLink.classList.add('flex', 'items-center', 'group', 'transition', 'duration-200'); 
+
         
         // --- ADD HOVER LISTENERS TO PROFILE LINK TO CONTROL AVATAR RING ---
         // This targets the avatarContainer using the helper functions
+
         profileLink.addEventListener('mouseenter', () => {
+
             applyRing(avatarContainer);
+
         });
+
         profileLink.addEventListener('mouseleave', () => {
+
             removeRing(avatarContainer);
+
         });
+
         // -------------------------------------------------------------------
+
         
         profileLink.appendChild(avatarContainer);
+
         profileLink.appendChild(nameOnlyContainer);
 
 
         // Final wrapper — link + badges
+
         const finalBlock = document.createElement('div');
+
         finalBlock.classList.add('flex', 'items-center');
+
         finalBlock.appendChild(profileLink);
+
         finalBlock.appendChild(badgesContainer);
 
 
         // Insert into DOM
+
         DOMElements.addedByUser.innerHTML = '';
+
         DOMElements.addedByUser.appendChild(finalBlock);
+
         DOMElements.addedByUser.classList.add('flex', 'items-center');
+
         DOMElements.addedByUser.style.display = 'flex';
 
+
     }).catch(() => {
+
 
         DOMElements.addedByName.textContent = 'Brand';
 
@@ -2835,9 +2896,12 @@ badgesContainer.classList.add('flex', 'items-center', 'ml-1', 'relative'); // <-
 
         DOMElements.addedByUser.classList.add('flex', 'items-center');
 
+
     });
 
+
 } else {
+
 
     DOMElements.addedByName.textContent = 'Brand';
 
@@ -2848,6 +2912,7 @@ badgesContainer.classList.add('flex', 'items-center', 'ml-1', 'relative'); // <-
     DOMElements.addedByUser.classList.remove('hidden');
 
     DOMElements.addedByUser.classList.add('flex', 'items-center');
+
 
 }
 
