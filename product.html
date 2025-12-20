@@ -18,15 +18,29 @@
 
     <style>
         :root {
-            --liyog-green: #28A428;
-            --liyog-green-light: #34bf49;
-            --liyog-green-dark: #228B22;
-            --liyog-deep-green: #006400;
-            --liyog-gold: #ffd700;
-            --liyog-orange: #ff7a00;
-            --liyog-blue: #1877F2;
-            --font-stack: 'Inter', sans-serif;
-        }
+    /* Original Liyog Colors */
+    --liyog-green: #28A428;
+    --liyog-green-light: #34BF49;
+    --liyog-green-dark: #228B22;
+    --liyog-deep-green: #006400;
+    --liyog-gold: #FFD700;
+    --liyog-orange: #FF7A00;
+    --liyog-blue: #1877F2;
+
+    /* New Liyog Colors */
+    --liyog-black: #111111;       /* Liyog Black */
+    --liyog-black-light: #1A1A1A; /* Slightly lighter black for contrast */
+    --liyog-black-dark: #000000;  /* Pitch black */
+    --liyog-yellow: #FFEA00;      /* Bright Liyog Yellow */
+    --liyog-yellow-dark: #E6D500; /* Darker yellow variant */
+    --liyog-red: #FF3B30;         /* Vibrant Liyog Red */
+    --liyog-red-dark: #C1271A;    /* Deep red variant for hover/alerts */
+
+    /* Font Stack */
+    --font-stack: 'Inter', sans-serif;
+}
+
+
 
         body { 
             font-family: var(--font-stack); 
@@ -838,45 +852,51 @@ body:has(.video-fullscreen-active) {
 
 <!-- Liyog Config -->
 <script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    liyog: {
-                        green: '#28A428',
-                        'green-light': '#34bf49',
-                        'green-dark': '#228B22',
-                        'deep-green': '#006400',
-                        gold: '#ffd700',
-                        orange: '#ff7a00',
-
-                        /* ⭐ NEW COLOR ADDED SAFELY */
-                        blue: '#1877F2',
-                    },
-                },
-                fontFamily: {
-                    sans: ['Inter', 'sans-serif'],
-                },
-                animation: {
-                    'shimmer': 'shimmer 3s infinite linear',
-                    'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    'float': 'float 6s ease-in-out infinite',
-                },
-                keyframes: {
-                    shimmer: {
-                        '0%': { transform: 'translateX(-150%) skewX(-15deg)' },
-                        '50%': { transform: 'translateX(150%) skewX(-15deg)' },
-                        '100%': { transform: 'translateX(150%) skewX(-15deg)' },
-                    },
-                    float: {
-                        '0%, 100%': { transform: 'translateY(0)' },
-                        '50%': { transform: 'translateY(-2px)' },
-                    }
-                }
-            },
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        liyog: {
+          green: '#28A428',            // existing
+          'green-light': '#34BF49',    // existing
+          'green-dark': '#228B22',     // existing
+          'deep-green': '#006400',     // existing
+          gold: '#FFD700',              // existing
+          orange: '#FF7A00',            // existing
+          blue: '#1877F2',              // existing
+          black: '#111111',             // NEW: Liyog Black (true dark, not pitch-black)
+          'black-light': '#1A1A1A',    // NEW: slightly lighter black for UI contrast
+          'black-dark': '#000000',      // NEW: pitch-black option
+          yellow: '#FFEA00',            // NEW: bright Liyog Yellow, vibrant and clean
+          'yellow-dark': '#E6D500',     // NEW: deeper yellow variant
+          red: '#FF3B30',               // NEW: vibrant red (like iOS danger red)
+          'red-dark': '#C1271A',        // NEW: deep red for hover/alerts
         },
-    }
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
+      animation: {
+        shimmer: 'shimmer 3s infinite linear',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        float: 'float 6s ease-in-out infinite',
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { transform: 'translateX(-150%) skewX(-15deg)' },
+          '50%': { transform: 'translateX(150%) skewX(-15deg)' },
+          '100%': { transform: 'translateX(150%) skewX(-15deg)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' },
+        },
+      },
+    },
+  },
+}
 </script>
+
 
     </head>
 
@@ -1025,8 +1045,22 @@ body:has(.video-fullscreen-active) {
                         </div>
                     </div>
 
-                    <div id="tags-container" class="mt-4 flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2">
-                    </div>
+                    <div
+  id="tags-container"
+  class="
+    mt-4
+    flex flex-wrap               /* 👈 allows wrapping on desktop */
+    sm:flex-nowrap               /* 👈 keeps horizontal scroll on small screens */
+    items-center
+    gap-2
+    overflow-x-auto
+    sm:overflow-x-auto
+    md:overflow-visible          /* 👈 desktop: show all tags */
+    hide-scrollbar
+    pb-2
+  ">
+</div>
+
 
                     <div class="my-6 bg-gray-50 p-4 rounded-lg border shadow-sm">
                         <div class="flex items-baseline gap-3 flex-wrap">
@@ -2509,17 +2543,27 @@ function renderProductDetails() {
         });
     }
 
-    // Ratings & Metrics (Product-level)
-    DOMElements.starRating.innerHTML = renderStarRatingHTML(p.avg_rating);
-    DOMElements.avgRating.textContent = (p.avg_rating || 0).toFixed(1);
+    // ================================
+// Ratings & Metrics (Product-level)
+// ================================
+const totalReviews = p.total_reviews ?? 0;
+const avgRating = p.avg_rating ?? 0;
 
-// =========================================================
+DOMElements.starRating.innerHTML = renderStarRatingHTML(avgRating);
+DOMElements.avgRating.textContent = avgRating.toFixed(1);
+
+// Header reviews count (SYNCED)
+if (DOMElements.totalReviews) {
+    DOMElements.totalReviews.textContent = totalReviews.toLocaleString();
+}
+
+ //=========================================================
 //  Animated Reviews Count & Tab Sync
 // =========================================================
 
 const totalReviewsEl = DOMElements.overallTotalReviewsCount;
-const newCount = state.product.total_reviews ?? 0;
-const newAvgRating = state.product.avg_rating ?? 0;
+const newCount = totalReviews;
+const newAvgRating = avgRating;
 
 if (totalReviewsEl) {
     const currentCount = parseInt(totalReviewsEl.dataset.currentCount || 0, 10);
@@ -2569,11 +2613,64 @@ if (reviewsTabButton) {
     DOMElements.totalLikes.textContent = (p.total_likes || 0).toLocaleString();
     DOMElements.totalViews.textContent = (p.total_views || 0).toLocaleString();
 
-    // Tags
-    const tags = (p.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-    DOMElements.tagsContainer.innerHTML = tags.map(tag => 
-        `<a href="#" class="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full whitespace-nowrap hover:bg-liyog-green hover:text-white transition-colors">${tag}</a>`
-    ).join('');
+    // ================================
+// Tags Rendering – Liyog 3D Interactive (Safe Upgrade)
+// ================================
+const tags = (p.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+
+DOMElements.tagsContainer.innerHTML = tags.map(tag => `
+  <a href="#"
+     class="
+       group
+       relative
+       inline-flex items-center justify-center
+       px-3 py-1
+       bg-liyog-black-light                 /* Outer background */
+       border border-liyog-gold             /* Normal border */
+       text-xs font-semibold
+       rounded-full
+       whitespace-nowrap
+       overflow-hidden
+       transition-all duration-300 ease-out
+       hover:-translate-y-[1px]             /* 3D lift */
+       hover:shadow-lg
+       active:translate-y-0
+       active:shadow-inner
+     ">
+
+     <!-- Mini inner background -->
+     <span class="
+       absolute inset-[3px]
+       bg-gray-100
+       rounded-full
+       transition-all duration-300 ease-out
+       group-hover:scale-95
+     "></span>
+
+     <!-- Tag text -->
+     <span class="
+       relative z-10
+       text-liyog-blue
+       transition-colors duration-300 ease-out
+       group-hover:text-white
+     ">
+       ${tag}
+     </span>
+
+     <!-- Hover overlay -->
+     <span class="
+       absolute inset-0
+       rounded-full
+       bg-liyog-green
+       border border-liyog-yellow
+       opacity-0
+       transition-all duration-300 ease-out
+       group-hover:opacity-100
+     "></span>
+
+  </a>
+`).join('');
+
 
     // Pricing
     const finalPrice = p.discount_price ?? p.price;
@@ -4998,7 +5095,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script src="/liyogstore/global-error.js"></script>
+<script src="/store/global-error.js"></script>
 
 <!-- ✅ All Product Reviews Modal -->
 <div id="all-reviews-modal"
