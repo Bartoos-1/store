@@ -5256,7 +5256,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   </div>
 </div>
+<script>
+function adjustModalScrollPadding() {
+  const composer = document.getElementById("modal-review-composer");
+  const wrapper = document.getElementById("modal-reviews-list-wrapper");
 
+  if (composer && wrapper) {
+    const composerHeight = composer.offsetHeight;
+    wrapper.style.paddingBottom = composerHeight + 32 + "px";
+  }
+}
+
+window.addEventListener("load", adjustModalScrollPadding);
+window.addEventListener("resize", adjustModalScrollPadding);
+</script>
 </body>
 </html>
 
